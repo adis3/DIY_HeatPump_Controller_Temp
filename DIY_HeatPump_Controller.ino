@@ -1,6 +1,8 @@
 //Version control
-#define VERSION "v1.1.0 4/11/2022"
+#define VERSION "v1.1.0 started 4/11/2022 released TBD"
 String FileName = __FILE__;
+
+#include "Config.h"
 
 /*
  * Define features
@@ -8,15 +10,6 @@ String FileName = __FILE__;
 
 //Debug logging
 #define DEBUG 0//1
-
-//Environment
-#define ENVIRONMENT 1
-//Instances, 0 - Undefined
-#define DEVELOPMENT 1
-#define TESTING 2
-#define ACCEPTANCE 3
-#define PRODUCTION 4
-#define BACKUP 5
 
 //Includes
 //#include <MemoryFree.h>
@@ -37,7 +30,6 @@ String FileName = __FILE__;
 #include <OutputRegister.h> // debug de scris versiunea
 //#include <Delay.h>
 //#include <Monostable.h>
-#include "Config.h"
 #include "Init.h"
 
 //includes for VS Code
