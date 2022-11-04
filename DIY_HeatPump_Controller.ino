@@ -10,13 +10,13 @@ String FileName = __FILE__;
 #define DEBUG 0//1
 
 //Environment
-#define ENVIRONMENT 0
-//Instances
-#define DEVELOPMENT 0
-#define TESTING 1
-#define ACCEPTANCE 2
-#define PRODUCTION 3
-#define BACKUP 4
+#define ENVIRONMENT 1
+//Instances, 0 - Undefined
+#define DEVELOPMENT 1
+#define TESTING 2
+#define ACCEPTANCE 3
+#define PRODUCTION 4
+#define BACKUP 5
 
 //Includes
 //#include <MemoryFree.h>

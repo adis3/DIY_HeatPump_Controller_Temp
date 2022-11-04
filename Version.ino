@@ -7,15 +7,17 @@ void Version(){
   Serial.println(F("Uploaded: " __DATE__ ", " __TIME__ ", " __VERSION__));
   Serial.print(F("Environment: "));
   //0 - Development, 1- Testing, 2- Acceptance, 3 - Production, 4 - Backup
-  #if ENV == 0
-    Serial.println("Development");
-  #elif ENV == 1
-    Serial.println("Testing");
-  #elif ENV == 2
-    Serial.println("Acceptance");
-  #elif ENV == 3
-    Serial.println("Production");
-  #elif ENV == 4
-    Serial.println("Backup");
+  #if ENVIRONMENT == 0
+    Serial.println(F("Undefined"));
+  #elif ENVIRONMENT == DEVELOPMENT
+    Serial.println(F("Development"));
+  #elif ENVIRONMENT == TESTING
+    Serial.println(F("Testing"));
+  #elif ENVIRONMENT == ACCEPTANCE
+    Serial.println(F("Acceptance"));
+  #elif ENVIRONMENT == PRODUCTION
+    Serial.println(F("Production");
+  #elif ENVIRONMENT == BACKUP
+    Serial.println(F("Backup"));
   #endif
 }
