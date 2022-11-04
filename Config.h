@@ -1,4 +1,3 @@
-//Hw config
 #define SERIAL_SPEED 19200
 #define SERIAL_PARAM SERIAL_8N1
 
@@ -152,6 +151,12 @@
  * D20/SDA/PD1 - LCD/RTC - tested, but not implemented
  * D21/SCL/PD0 - LCD/RTC - tested, but not implemented
  * 
+ * D22-D53
+ * 5Vx2 - PWR 2P connector
+ * 
+ * D51 - LCDRxPin - SeeedStudio SerialLCD - To be replaced by I2C LCD
+ * D53 - LCDTxPin - SeeedStudio SerialLCD - To be replaced by I2C LCD
+ * GNDx2 - PWR 2P connector
  * 
  * 
  * https://content.arduino.cc/assets/Pinout-Mega2560rev3_latest.png
