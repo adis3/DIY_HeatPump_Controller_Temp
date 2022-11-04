@@ -1,5 +1,5 @@
 //Version control
-#define VERSION "v1.0.0 20/10/2022"
+#define VERSION "v1.1.0 4/11/2022"
 String FileName = __FILE__;
 
 /*
@@ -10,8 +10,13 @@ String FileName = __FILE__;
 #define DEBUG 0//1
 
 //Environment
-//#define PROD 111//999//
-#define ENV 0 //0 - Development, 1 - Testing, 2 - Acceptance, 3 - Production, 4 - Backup
+#define ENVIRONMENT 0
+//Instances
+#define DEVELOPMENT 0
+#define TESTING 1
+#define ACCEPTANCE 2
+#define PRODUCTION 3
+#define BACKUP 4
 
 //Includes
 //#include <MemoryFree.h>
@@ -51,7 +56,7 @@ String FileName = __FILE__;
 #endif
 PZEM004Tv30 pzem(PZEM_SERIAL);
 
-#if ENV == 2 or ENV == 3 or ENV == 4
+#if ENVIRONMENT == ACCEPTANCE or ENVIRONMENT == PRODUCTION or ENVIRONMENT == BACKUP
   #include <SerialLCD.h>
   #include <SoftwareSerial.h> //this is a must
   SerialLCD slcd( LCDTxPin,LCDRxPin);
@@ -62,7 +67,7 @@ void setup() {
   //SaveToEEPROM();
   //pzem.resetEnergy();
   LoadFromEEPROM();
-  Serial.begin(SerialSpeed, SerialParam);
+  Serial.begin(SERIAL_SPEED, SERIAL_PARAM);
   //delay(1000);
   //Serial.println(pS.HeatEnergyMeter,6);
   //delay(10000);
@@ -72,26 +77,26 @@ void setup() {
   //delay(100);
   Version();
   
-  #if ENV == 0
+  #if ENVIRONMENT == DEVELOPMENT
     SessionElectricityEnergyMeterStart = 0;
   #endif
-  #if ENV == 2 or ENV == 3 or ENV == 4
+  #if ENVIRONMENT == ACCEPTANCE or ENVIRONMENT == PRODUCTION or ENVIRONMENT == BACKUP
     float energy = pzem.energy();
     if (!isnan(energy))
       SessionElectricityEnergyMeterStart = energy * 1000;
   #endif
   
-  attachInterrupt(digitalPinToInterrupt(FlowMeterInputPin), FlowMeterHandler, RISING);
+  attachInterrupt(digitalPinToInterrupt(FLOW_METER_INPUT_PIN), FlowMeterHandler, RISING);
   
-  #if ReportInterval != 0
+  #if SERIAL_REPORT_INTERVAL != 0
     Serial.println(F("Reporting:"));    
   #endif
 
-  #if ENV == 2 or ENV == 3 or ENV == 4
+  #if ENVIRONMENT == ACCEPTANCE or ENVIRONMENT == PRODUCTION or ENVIRONMENT == BACKUP
     slcd.begin();
     slcd.backlight();
   #endif
-  #if ReportLines == 0
+  #if SERIAL_REPORT_LINES == 0
     ReportHeader();
   #endif
 }
@@ -106,7 +111,7 @@ void loop() {
         CirculatorPump.State(true);
         if ( HeatEnergyMeter != 0 ){
           HeatEnergyMeter = 0;
-          #if ENV == 2 or ENV == 3 or ENV == 4
+          #if ENVIRONMENT == ACCEPTANCE or ENVIRONMENT == PRODUCTION or ENVIRONMENT == BACKUP
             float energy = pzem.energy();
             if (!isnan(energy))
               SessionElectricityEnergyMeterStart = energy * 1000;
@@ -124,7 +129,7 @@ void loop() {
     }
   }
   
-  if (PowerOffFlag && ( millis() > (ThermostatInOffPreviousMillis + (unsigned long) PowerOffDelay * 60 * 1000) )) {
+  if (PowerOffFlag && ( millis() > (ThermostatInOffPreviousMillis + (unsigned long) POWER_OFF_DELAY * 60 * 1000) )) {
     HeatPump.State(false);
     CirculatorPump.State(false);
     PowerOffFlag = false;
@@ -144,14 +149,14 @@ void loop() {
     ProtectionThermostatH.Process();
   }
   Report();
-  #if ENV == 2 or ENV == 3 or ENV == 4
+  #if ENVIRONMENT == ACCEPTANCE or ENVIRONMENT == PRODUCTION or ENVIRONMENT == BACKUP
     LCDReport();
   #endif
-  #if ENV == 0
+  #if ENVIRONMENT == DEVELOPMENT
     SerialFlowMeterCounter ++;
     LCDFlowMeterCounter ++;
     if (CirculatorPump.State() && (!THI.Error) && (!THO.Error) )
-      HeatEnergyMeter += (float)(THO.Temperature-THI.Temperature) / FlowMeterImpPerL * WatsPerLPerKelvin;
+      HeatEnergyMeter += (float)(THO.Temperature-THI.Temperature) / FLOW_METER_IMP_PER_L * WATTS_PER_L_PER_K;
     delay(1000/77);
   #endif
 }
@@ -161,6 +166,6 @@ void FlowMeterHandler(){
   LCDFlowMeterCounter ++;
   if (CirculatorPump.State()){
     if ( (!THI.Error) && (!THO.Error) )
-      HeatEnergyMeter += (float)(THO.Temperature-THI.Temperature) / FlowMeterImpPerL * WatsPerLPerKelvin;
+      HeatEnergyMeter += (float)(THO.Temperature-THI.Temperature) / FLOW_METER_IMP_PER_L * WATTS_PER_L_PER_K;
   }
 }

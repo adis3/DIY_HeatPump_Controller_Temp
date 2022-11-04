@@ -1,131 +1,163 @@
 //Hw config
-#define SerialSpeed 19200
-#define SerialParam SERIAL_8N1
+#define SERIAL_SPEED 19200
+#define SERIAL_PARAM SERIAL_8N1
 
-#define FlowMeterImpPerL 352.735642
-#define WatsPerLPerKelvin 1.16388889 
+#define FLOW_METER_IMP_PER_L 352.735642
+#define WATTS_PER_L_PER_K 1.16388889 
 
-#if ENV == 0
-  #define ThermostatInputPin 3
-  #define HeatPumpPin A1
-  #define CirculatorPumpPin A2
-  #define AmbientalNTCOptocouplerPin 10
+#if ENVIRONMENT == DEVELOPMENT
+  #define THERMOSTAT_INPUT_PIN 3
+  #define HEAT_PUMP_OUTPUT_PIN A1
+  #define CIRCULATOR_PUMP_OUTPUT_PIN A2
+  #define AMBIENTAL_NTC_OPTOCOUPLER_OUTPUT_PIN 10
   
-  #define HeatExchangerOWPin A0
-  #define OutsideOWPin A0
+  #define HEAT_EXCHANGER_ONE_WIRE_PIN A0
+  #define OUTSIDE_ONE_WIRE_PIN A0
   
-  #define FlowMeterInputPin 2
+  #define FLOW_METER_INPUT_PIN 2
   
-  #define HeatExchangerReadingInterval 1
-  #define OutsideReadingInterval 60
+  #define HEAT_EXCHANGER_THERMOMETER_READING_INTERVAL 1
+  #define OUTSIDE_THERMOMETER_READING_INTERVAL 60
   
   //#define TempSensorReadInterval 2
-  #define TempSensorReadDelay 750
-  #define TempSensorMinMaxClearDelay 72000000
+  #define THERMOMETER_READING_DELAY 750
+  #define THERMOMETER_MIN_MAX_CLEAR_INTERVAL 72000000
   
-  #define HeatingAgentTargetTemp 27
-  #define HeatingAgentMaxTemp 38
-  #define HeatingAgentHisterezis 1
-  #define HeatingAgentSwitchingInterval 1//debug 30
-  #define HeatingAgentMinTargetTemp 25
-  #define HeatingAgentMaxTargetTemp 40
+  #define HEATING_AGENT_TARGET_TEMPERATURE 27
+  #define HEATING_AGENT_MAX_TEMPERATURE 38
+  #define HEATING_AGENT_HISTEREZIS 1
+  #define HEATING_AGENT_SWITCHING_INTERVAL 1//debug 30
+  #define HEATING_AGENT_TARGET_TEMPERATURE_MIN_LIMIT 25
+  #define HEATING_AGENT_TARGET_TEMPERATURE_MAX_LIMIT 40
   
-  #define PowerOffDelay 1 //minutes
-  #define ReportInterval 1 //minutes
-  #define LCDInterval 3 //seconds
+  #define POWER_OFF_DELAY 1 //minutes
+  #define SERIAL_REPORT_INTERVAL 1 //minutes
+  #define LCD_REPORT_INTERVAL 3 //seconds
   
-  #define ReportLines 40
+  #define SERIAL_REPORT_LINES 40
   
   struct TParams {
     byte Bus;
     byte Addr[8];
     float Cal;
     }
-    TPHO = {HeatExchangerOWPin, {0x28, 0x87, 0xB1, 0x79, 0xA2, 0x0, 0x3, 0x93}, -0.28},
-    TPHI = {HeatExchangerOWPin, {0x28, 0x20, 0x32, 0x79, 0xA2, 0x0, 0x3, 0xCF}, 0.22},
-    TPRG = {HeatExchangerOWPin, {0x28, 0x87, 0xB1, 0x79, 0xA2, 0x0, 0x3, 0x93}, 0.09},
-    TPRL = {HeatExchangerOWPin, {0x28, 0x20, 0x32, 0x79, 0xA2, 0x0, 0x3, 0xCF}, 0.03},
-    TPHE = {HeatExchangerOWPin, {0x28, 0x87, 0xB1, 0x79, 0xA2, 0x0, 0x3, 0x93}, -0.28}, //firul scurt
-    TPE = {OutsideOWPin, {0x28, 0x20, 0x32, 0x79, 0xA2, 0x0, 0x3, 0xCF}, 0}; //exterior
+    TPHO = {HEAT_EXCHANGER_ONE_WIRE_PIN, {0x28, 0x87, 0xB1, 0x79, 0xA2, 0x0, 0x3, 0x93}, -0.28},
+    TPHI = {HEAT_EXCHANGER_ONE_WIRE_PIN, {0x28, 0x20, 0x32, 0x79, 0xA2, 0x0, 0x3, 0xCF}, 0.22},
+    TPRG = {HEAT_EXCHANGER_ONE_WIRE_PIN, {0x28, 0x87, 0xB1, 0x79, 0xA2, 0x0, 0x3, 0x93}, 0.09},
+    TPRL = {HEAT_EXCHANGER_ONE_WIRE_PIN, {0x28, 0x20, 0x32, 0x79, 0xA2, 0x0, 0x3, 0xCF}, 0.03},
+    TPHE = {HEAT_EXCHANGER_ONE_WIRE_PIN, {0x28, 0x87, 0xB1, 0x79, 0xA2, 0x0, 0x3, 0x93}, -0.28}, //firul scurt
+    TPE = {OUTSIDE_ONE_WIRE_PIN, {0x28, 0x20, 0x32, 0x79, 0xA2, 0x0, 0x3, 0xCF}, 0}; //exterior
 #endif
 
-#if ENV == 2
-  #define PowerOffDelay 1
-  #define HeatingAgentTargetTemp 25
-  #define HeatingAgentMaxTemp 38
-  #define HeatingAgentHisterezis 6
-  #define HeatingAgentSwitchingInterval 1//debug 30
-  #define HeatingAgentMinTargetTemp 25
-  #define HeatingAgentMaxTargetTemp 40
+#if ENVIRONMENT == ACCEPTANCE
+  #define POWER_OFF_DELAY 1
+  #define HEATING_AGENT_TARGET_TEMPERATURE 25
+  #define HEATING_AGENT_MAX_TEMPERATURE 38
+  #define HEATING_AGENT_HISTEREZIS 6
+  #define HEATING_AGENT_SWITCHING_INTERVAL 1//debug 30
+  #define HEATING_AGENT_TARGET_TEMPERATURE_MIN_LIMIT 25
+  #define HEATING_AGENT_TARGET_TEMPERATURE_MAX_LIMIT 40
 #endif
-#if ENV == 3 or ENV == 4
-  #define PowerOffDelay 10
-  #define HeatingAgentTargetTemp 32
-  #define HeatingAgentMaxTemp 38
-  #define HeatingAgentHisterezis 6
-  #define HeatingAgentSwitchingInterval 1//debug 30
-  #define HeatingAgentMinTargetTemp 25
-  #define HeatingAgentMaxTargetTemp 40
+#if ENVIRONMENT == PRODUCTION or ENVIRONMENT == BACKUP
+  #define POWER_OFF_DELAY 10
+  #define HEATING_AGENT_TARGET_TEMPERATURE 32
+  #define HEATING_AGENT_MAX_TEMPERATURE 38
+  #define HEATING_AGENT_HISTEREZIS 6
+  #define HEATING_AGENT_SWITCHING_INTERVAL 1//debug 30
+  #define HEATING_AGENT_TARGET_TEMPERATURE_MIN_LIMIT 25
+  #define HEATING_AGENT_TARGET_TEMPERATURE_MAX_LIMIT 40
 #endif
 
-#if ENV == 2 or ENV == 3 or ENV == 4
-  #define ThermostatInputPin 3
-  #define HeatPumpPin 12
-  #define CirculatorPumpPin 11
-  #define AmbientalNTCOptocouplerPin 10
+#if ENVIRONMENT == ACCEPTANCE or ENVIRONMENT == PRODUCTION or ENVIRONMENT == BACKUP
+  #define THERMOSTAT_INPUT_PIN 3
+  #define HEAT_PUMP_OUTPUT_PIN 12
+  #define CIRCULATOR_PUMP_OUTPUT_PIN 11
+  #define AMBIENTAL_NTC_OPTOCOUPLER_OUTPUT_PIN 10
+  #define BACKUP_HEATER_PIN 9
   
-  #define HeatExchangerOWPin 7
-  #define OutsideOWPin 7 //debug de schimbat
+  #define HEAT_EXCHANGER_ONE_WIRE_PIN 7
+  #define OUTSIDE_ONE_WIRE_PIN 7 //debug de schimbat
   
-  #define FlowMeterInputPin 2
+  #define FLOW_METER_INPUT_PIN 2
 
   #define LCDTxPin 53 //as noted on display, not actual Arduino Tx
   #define LCDRxPin 51 //as noted on display, not actual Arduino Rx
     
-  #define HeatExchangerReadingInterval 6
-  #define OutsideReadingInterval 60
+  #define HEAT_EXCHANGER_THERMOMETER_READING_INTERVAL6
+  #define OUTSIDE_THERMOMETER_READING_INTERVAL 60
   
   //#define TempSensorReadInterval 2
-  #define TempSensorReadDelay 750
-  #define TempSensorMinMaxClearDelay 72000000
+  #define THERMOMETER_READING_DELAY 750
+  #define THERMOMETER_MIN_MAX_CLEAR_INTERVAL 72000000
     
-  #define ReportInterval 1 //minutes
-  #define LCDInterval 5 //seconds
+  #define SERIAL_REPORT_INTERVAL 1 //minutes
+  #define LCD_REPORT_INTERVAL 5 //seconds
 
-  #define ReportLines 0
+  #define SERIAL_REPORT_LINES 0
   
   struct TParams {
     byte Bus;
     byte Addr[8];
     float Cal;
     }
-    TPHO = {HeatExchangerOWPin, {0x28, 0x34, 0x8, 0x79, 0xA2, 0x0, 0x3, 0x71}, -0.28},
-    TPHI = {HeatExchangerOWPin, {0x28, 0xA0, 0x89, 0x79, 0xA2, 0x0, 0x3, 0x1A}, 0.22},
-    TPRG = {HeatExchangerOWPin, {0x28, 0x8F, 0x0, 0x79, 0xA2, 0x0, 0x3, 0xB0}, 0.09},
-    TPRL = {HeatExchangerOWPin, {0x28, 0xD5, 0x1, 0x79, 0xA2, 0x0, 0x3, 0x9C}, 0.03},
-    TPHE = {HeatExchangerOWPin, {0x28, 0x75, 0xC9, 0x79, 0xA2, 0x0, 0x3, 0xDC}, -0.28}, //firul scurt
-    TPE = {OutsideOWPin, {0x28, 0x90, 0xE, 0x79, 0xA2, 0x0, 0x3, 0x6D}, 0.22}; //exterior
+    TPHO = {HEAT_EXCHANGER_ONE_WIRE_PIN, {0x28, 0x34, 0x8, 0x79, 0xA2, 0x0, 0x3, 0x71}, -0.28},
+    TPHI = {HEAT_EXCHANGER_ONE_WIRE_PIN, {0x28, 0xA0, 0x89, 0x79, 0xA2, 0x0, 0x3, 0x1A}, 0.22},
+    TPRG = {HEAT_EXCHANGER_ONE_WIRE_PIN, {0x28, 0x8F, 0x0, 0x79, 0xA2, 0x0, 0x3, 0xB0}, 0.09},
+    TPRL = {HEAT_EXCHANGER_ONE_WIRE_PIN, {0x28, 0xD5, 0x1, 0x79, 0xA2, 0x0, 0x3, 0x9C}, 0.03},
+    TPHE = {HEAT_EXCHANGER_ONE_WIRE_PIN, {0x28, 0x75, 0xC9, 0x79, 0xA2, 0x0, 0x3, 0xDC}, -0.28}, //firul scurt
+    TPE = {OUTSIDE_ONE_WIRE_PIN, {0x28, 0x90, 0xE, 0x79, 0xA2, 0x0, 0x3, 0x6D}, 0.22}; //exterior
 
 /*
+ * HW Connections:
+ * 
+ * Power 2P connector
+ * VIN - spacer
+ * GND - spacer
+ * GND - PWR - Should move on the 2x18P connector with 2P connector for contact reliability
+ * +5V - PWR - Should move on the 2x18P connector with 2P connector for contact reliability
+ * +3.3V - NC
+ * RESET - NC
+ * IOREF - NC
+ * NC - NC
+ * 
+ * D0-D7 6P connector
+ * D0/RX0/PE0 - spacer
+ * D1/TX0/PE1 - spacer
+ * D2/PE4/INT4 - FLOW_METER_INPUT_PIN
+ * D3/PE5/INT5 - THERMOSTAT_INPUT_PIN
+ * D4/PG5 - 
+ * D5/PE3 - 
+ * D6/PH3 - 
+ * D7/PH4 - HEAT_EXCHANGER_ONE_WIRE_PIN / OUTSIDE_ONE_WIRE_PIN
+ * 
+ * D8-D21 5P connector
+ * D8/PH5
+ * D9/PH6 - BACKUP_HEATER_PIN
+ * D10/PB4 - AMBIENTAL_NTC_OPTOCOUPLER_OUTPUT_PIN
+ * D11/PB5 - CIRCULATOR_PUMP_OUTPUT_PIN
+ * D12/PB6 - HEAT_PUMP_OUTPUT_PIN
+ * D13/PB7 - spacer
+ * GND - spacer
+ * AREF - spacer
+ * D20/SDA/PD1 - spacer
+ * D21/SCL/PD0 - spacer
+ * 
+ * D14-D21 8P connector
+ * D14/TX3 - CH376 USB flash drive host - tested, but not implemented
+ * D15/RX3 - CH376 USB flash drive host - tested, but not implemented
+ * D16/TX2 - PZEM_RX_PIN - PZEM Module
+ * D17/RX2 - PZEM_TX_PIN - PZEM Module
+ * D18/TX1 - HC-06 bluetooth module - not received
+ * D19/RX1 - HC-06 bluetooth module - not received
+ * D20/SDA/PD1 - LCD/RTC - tested, but not implemented
+ * D21/SCL/PD0 - LCD/RTC - tested, but not implemented
  * 
  * 
  * 
- * 
- * 
- * 
- * 
+ * https://content.arduino.cc/assets/Pinout-Mega2560rev3_latest.png
+ * https://www.electronicshub.org/wp-content/uploads/2021/01/Arduino-Mega-Pinout.jpg
+ * https://aws1.discourse-cdn.com/arduino/original/4X/f/6/2/f6258a2ebd00a3f75099715f82914ed17175130f.jpeg
  * 
  */
     
 #endif
-
-
-/*
- * intrare optocuplor centrala - 9
- * iesire optocuplor NTC pompa de caldura - 10
- * iesire pornire pompa de caldura - 12
- * iesire pornire pompa de recirculare - 11
- * intrare bus OnwWire - 7
- * intrare comanda caldura de la pardoseala - 3
- * intrare debimetru - 2
- */

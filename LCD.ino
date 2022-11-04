@@ -1,9 +1,9 @@
-#if ENV == 2 or ENV == 3 or ENV == 4
+#if ENVIRONMENT == ACCEPTANCE or ENVIRONMENT == PRODUCTION or ENVIRONMENT == BACKUP
 
-unsigned long LCDPreviousMillis = millis() - (unsigned long)LCDInterval * 1000;
+unsigned long LCDPreviousMillis = millis() - (unsigned long)LCD_REPORT_INTERVAL * 1000;
 
 void LCDReport () {
-  if (( LCDInterval != 0 ) && ( millis() - LCDPreviousMillis > (unsigned long)LCDInterval * 1000)) {
+  if (( LCD_REPORT_INTERVAL != 0 ) && ( millis() - LCDPreviousMillis > (unsigned long)LCD_REPORT_INTERVAL * 1000)) {
     LCDPreviousMillis = millis();
     slcd.clear();
     slcd.setCursor(0,0);
@@ -21,18 +21,18 @@ void LCDReport () {
       slcd.print("---");
     slcd.setCursor(9,0);
 
-    double Freq = (double)LCDFlowMeterCounter / LCDInterval;
+    double Freq = (double)LCDFlowMeterCounter / LCD_REPORT_INTERVAL;
     LCDFlowMeterCounter = 0;
-    double Flow = Freq * 60 / FlowMeterImpPerL;
+    double Flow = Freq * 60 / FLOW_METER_IMP_PER_L;
     long HeatingPower = 0;
     if ( (!THI.Error) && (!THO.Error) )
-      HeatingPower = (double)(THO.Temperature - THI.Temperature) * Flow * WatsPerLPerKelvin * 60;
-    #if ENV == 0
-      int power = 1234;
-    #endif
-    #if ENV == 2 or ENV == 3 or ENV == 4
+      HeatingPower = (double)(THO.Temperature - THI.Temperature) * Flow * WATTS_PER_L_PER_K * 60;
+    // #if ENV == 0
+    //   int power = 1234;
+    // #endif
+    // #if ENV == 2 or ENV == 3 or ENV == 4
       int power = pzem.power();
-    #endif
+    // #endif
     if (isnan(power))
       slcd.print("---");
     else {
@@ -44,12 +44,12 @@ void LCDReport () {
 
     slcd.setCursor(13,0);
 
-    #if ENV == 0
-      float energy = HeatEnergyMeter / 4 / 1000;
-    #endif
-    #if ENV == 2 or ENV == 3 or ENV == 4
+    // #if ENV == 0
+    //   float energy = HeatEnergyMeter / 4 / 1000;
+    // #endif
+    // #if ENV == 2 or ENV == 3 or ENV == 4
       float energy = pzem.energy();
-    #endif
+    // #endif
     if (isnan(energy))
       slcd.print("---");
     else {

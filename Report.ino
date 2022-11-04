@@ -1,10 +1,10 @@
-unsigned long ReportPreviousMillis = millis() - (unsigned long)ReportInterval * 1000 * 60;
-byte ReportLinesCounter = 0;
+unsigned long ReportPreviousMillis = millis() - (unsigned long)SERIAL_REPORT_INTERVAL * 1000 * 60;
+byte SERIAL_REPORT_LINESCounter = 0;
 
 void ReportHeader () {
   Serial.print(F("Min.\t"));
   Serial.print(F("THO(C)\tTHI(C)\tTE(C)\t"));
-  #if ENV != 0
+  #if ENVIRONMENT != DEVELOPMENT
     Serial.print(F("TRG(C)\tTRL(C)\t"));
     Serial.print(F("THE(C)\t"));
   #endif
@@ -13,13 +13,13 @@ void ReportHeader () {
 }
 
 void Report () {
-  if (( ReportInterval != 0 ) && ( millis() - ReportPreviousMillis > (unsigned long)ReportInterval * 1000 * 60)) {
+  if (( SERIAL_REPORT_INTERVAL != 0 ) && ( millis() - ReportPreviousMillis > (unsigned long)SERIAL_REPORT_INTERVAL * 1000 * 60)) {
     ReportPreviousMillis = millis();
-    #if ReportLines != 0
-      if ( ReportLinesCounter == 0 )
+    #if SERIAL_REPORT_LINES != 0
+      if ( SERIAL_REPORT_LINESCounter == 0 )
         ReportHeader();
-      ReportLinesCounter ++;
-      ReportLinesCounter = ReportLinesCounter % ReportLines;
+      SERIAL_REPORT_LINESCounter ++;
+      SERIAL_REPORT_LINESCounter = SERIAL_REPORT_LINESCounter % SERIAL_REPORT_LINES;
     #endif
     Serial.print(millis() / 1000 / 60);
     Serial.print(F("\t"));
@@ -38,7 +38,7 @@ void Report () {
     else
       Serial.print(F("----"));
     Serial.print(F("\t"));
-    #if ENV != 0
+    #if ENVIRONMENT != DEVELOPMENT
       if (!TRG.Error)
         Serial.print(TRG.Temperature,1);
       else
@@ -63,24 +63,24 @@ void Report () {
     Serial.print(F("\t"));
     Serial.print(CirculatorPump.State());
     Serial.print(F("\t"));
-    double Freq = (double)SerialFlowMeterCounter / 60 / ReportInterval;
+    double Freq = (double)SerialFlowMeterCounter / 60 / SERIAL_REPORT_INTERVAL;
     SerialFlowMeterCounter = 0;
     Serial.print(Freq,1);
     Serial.print(F("\t"));
-    double Flow = Freq * 60 / FlowMeterImpPerL;
+    double Flow = Freq * 60 / FLOW_METER_IMP_PER_L;
     Serial.print(Flow,1);
     Serial.print(F("\t"));
     long HeatingPower = 0;
     if ( (!THI.Error) && (!THO.Error) ){
-      HeatingPower = (double)(THO.Temperature - THI.Temperature) * Flow * WatsPerLPerKelvin * 60;
+      HeatingPower = (double)(THO.Temperature - THI.Temperature) * Flow * WATTS_PER_L_PER_K * 60;
       Serial.print(HeatingPower);
     } else
       Serial.print("----");
     Serial.print(F("\t"));
-    #if ENV == 0
+    #if ENVIRONMENT == DEVELOPMENT
       int power = 1234;
     #endif
-    #if ENV == 2 or ENV == 3 or ENV == 4
+    #if ENVIRONMENT == ACCEPTANCE or ENVIRONMENT == PRODUCTION or ENVIRONMENT == BACKUP
       int power = pzem.power();
     #endif
     if (isnan(power))
@@ -96,10 +96,10 @@ void Report () {
     Serial.print(F("\t"));
     Serial.print((long)HeatEnergyMeter);
     Serial.print(F("\t"));
-    #if ENV == 0
+    #if ENVIRONMENT == DEVELOPMENT
       float energy = HeatEnergyMeter / 4 / 1000;
     #endif
-    #if ENV == 2 or ENV == 3 or ENV == 4
+    #if ENVIRONMENT == ACCEPTANCE or ENVIRONMENT == PRODUCTION or ENVIRONMENT == BACKUP
       float energy = pzem.energy();
     #endif
     if (isnan(energy))
