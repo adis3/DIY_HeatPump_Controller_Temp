@@ -79,7 +79,7 @@ void LCDReport () {
       slcd.print((float)energy,0);
       slcd.setCursor(13,1);
       if ((energy) != 0)
-        slcd.print((float)((pS.HeatEnergyMeter + (CirculatorPump.State()?HeatEnergyMeter / 1000:0) ) / energy),1);
+        slcd.print((float)((PC.HeatEnergyMeter + (CirculatorPump.State()?HeatEnergyMeter / 1000:0) ) / energy),1);
       else
         slcd.print("---");
     }

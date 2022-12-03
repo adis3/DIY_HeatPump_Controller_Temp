@@ -1,6 +1,12 @@
 {
     "configuration": "cpu=atmega2560",
     "board": "arduino:avr:mega",
-    "port": "/dev/tty.usbserial-1410",
-    "sketch": "DIY_HeatPump_Controller.ino"
+    "port": "/dev/tty.usbserial-14220",
+    "sketch": "DIY_HeatPump_Controller.ino",
+    "buildPreferences": [
+        [
+            "build.extra_flags",
+            "-D__AVR_ATmega2560__"
+        ]
+    ]
 }
